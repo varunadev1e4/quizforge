@@ -8,7 +8,7 @@ import styles from './QuizQuestion.module.css';
 const OPTION_LETTERS = ['A', 'B', 'C', 'D'];
 
 export default function QuizQuestion({ session, onSelect, onConfirm, onNext }) {
-  const { subject, level, questions, current, selectedOption, phase, timeLeft } = session;
+  const { subject, level, subtopic, questions, current, selectedOption, phase, timeLeft } = session;
   const q = questions[current];
   const displaySubject = q?.subject || subject;
   const displayLevel = q?.level || level;
@@ -22,6 +22,9 @@ export default function QuizQuestion({ session, onSelect, onConfirm, onNext }) {
         <div className={styles.topLeft}>
           <SubjectBadge subject={displaySubject} size="md" />
           <LevelBadge level={displayLevel} size="md" />
+          {subject !== 'grand' && subtopic && subtopic !== 'all' && (
+            <span className={styles.topicPill}>{subtopic}</span>
+          )}
         </div>
 
         <QuizTimer timeLeft={timeLeft} />

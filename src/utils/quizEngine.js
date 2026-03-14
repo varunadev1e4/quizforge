@@ -18,7 +18,7 @@ export function calcXP(correct, total, level) {
 /**
  * Given a user object and quiz result, return the updated user.
  */
-export function applyQuizResult(user, { subject, level, levelBySubject, answers, questions }) {
+export function applyQuizResult(user, { subject, level, subtopic, levelBySubject, answers, questions }) {
   const correct = answers.filter((a, i) => a === questions[i].ans).length;
   const total    = questions.length;
   const score    = Math.round((correct / total) * 100);
@@ -52,6 +52,7 @@ export function applyQuizResult(user, { subject, level, levelBySubject, answers,
     timestamp:  Date.now(),
     subject,
     level,
+    subtopic: subject === 'grand' ? null : (subtopic || 'all'),
     levelBySubject: subject === 'grand' ? levelBySubject : null,
     score,
     correct,

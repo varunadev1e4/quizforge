@@ -5,6 +5,30 @@ import { QUESTIONS_PER_QUIZ, SUBJECTS } from '../constants';
 
 export const QUESTION_BANK = { math, physics, chemistry };
 
+const SUBTOPIC_MATCHERS = {
+  math: {
+    algebra: [/solve/i, /factor/i, /inverse/i, /sequence/i, /matrix/i, /determinant/i],
+    trigonometry: [/sin/i, /cos/i, /tan/i, /angle/i, /period/i],
+    geometry: [/area/i, /perimeter/i, /circle/i, /parabola/i, /distance/i],
+    calculus: [/derivative/i, /integral/i, /∫/i, /lim\(/i, /taylor/i],
+    statistics: [/probability/i, /P\(/i, /mean/i, /distribution/i],
+  },
+  physics: {
+    mechanics: [/force/i, /velocity/i, /acceleration/i, /momentum/i, /newton/i, /work/i],
+    electricity: [/electric/i, /voltage/i, /current/i, /magnetic/i, /circuit/i, /ohm/i],
+    waves: [/wave/i, /light/i, /optics/i, /frequency/i, /wavelength/i, /sound/i],
+    thermodynamics: [/heat/i, /entropy/i, /thermo/i, /temperature/i, /gas/i],
+    modern: [/quantum/i, /relativity/i, /nuclear/i, /photon/i, /atom/i],
+  },
+  chemistry: {
+    atomic: [/atom/i, /electron/i, /proton/i, /orbital/i, /periodic/i],
+    bonding: [/bond/i, /ionic/i, /covalent/i, /molecule/i, /hybrid/i],
+    reactions: [/reaction/i, /equilibrium/i, /oxidation/i, /acid/i, /base/i],
+    organic: [/organic/i, /alkane/i, /benzene/i, /polymer/i, /functional group/i],
+    physical: [/enthalpy/i, /entropy/i, /kinetic/i, /rate/i, /thermo/i],
+  },
+};
+
 function shuffle(list) {
   return [...list].sort(() => Math.random() - 0.5);
 }
@@ -15,15 +39,25 @@ function levelWeight(level) {
 }
 
 /** Return a shuffled subset of QUESTIONS_PER_QUIZ questions for a given subject + level */
-export function getQuizQuestions(subject, level, customQuestions = []) {
+export function getQuizQuestions(subject, level, customQuestions = [], options = {}) {
   if (subject === 'grand' && level && typeof level === 'object') {
     return getGrandQuizQuestions(level, customQuestions);
   }
 
+  const subtopic = options.subtopic ?? 'all';
   const base = [...(QUESTION_BANK[subject]?.[level] ?? [])];
   const custom = customQuestions.filter(q => q.subject === subject && q.level === level);
-  const pool = [...base, ...custom];
+  const pool = filterBySubtopic(subject, subtopic, [...base, ...custom]);
   return shuffle(pool).slice(0, QUESTIONS_PER_QUIZ);
+}
+
+function filterBySubtopic(subject, subtopic, questions) {
+  if (!subtopic || subtopic === 'all') return questions;
+  const rules = SUBTOPIC_MATCHERS[subject]?.[subtopic];
+  if (!rules?.length) return questions;
+
+  const filtered = questions.filter(q => rules.some(rule => rule.test(q.q)));
+  return filtered.length >= 8 ? filtered : questions;
 }
 
 function getGrandQuizQuestions(levelBySubject, customQuestions = []) {
