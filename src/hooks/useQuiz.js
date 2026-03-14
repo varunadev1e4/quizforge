@@ -39,6 +39,31 @@ export function useQuiz() {
     });
   }, [store.customQuestions]);
 
+  const retryIncorrect = useCallback((session) => {
+    if (!session?.questions?.length || !session?.answers?.length) return false;
+
+    const wrongQuestions = session.questions.filter((q, i) => session.answers[i] !== q.ans);
+    if (!wrongQuestions.length) return false;
+
+    setQuizSession({
+      subject: session.subject,
+      level: session.level,
+      levelBySubject: session.levelBySubject || null,
+      questions: wrongQuestions,
+      current: 0,
+      answers: [],
+      startTime: Date.now(),
+      questionStart: Date.now(),
+      timeLeft: SECONDS_PER_QUESTION,
+      phase: 'answering',
+      selectedOption: null,
+      timings: [],
+      result: null,
+      retryMode: 'incorrect-only',
+    });
+    return true;
+  }, []);
+
   // ── Timer tick ──────────────────────────────────────────────────────────
   useEffect(() => {
     if (!quizSession || quizSession.phase !== 'answering') {
@@ -138,5 +163,5 @@ export function useQuiz() {
 
   const exitQuiz = useCallback(() => setQuizSession(null), []);
 
-  return { quizSession, startQuiz, selectOption, confirmAnswer, nextQuestion, exitQuiz };
+  return { quizSession, startQuiz, retryIncorrect, selectOption, confirmAnswer, nextQuestion, exitQuiz };
 }

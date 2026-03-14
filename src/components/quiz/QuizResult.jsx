@@ -4,7 +4,7 @@ import Button from '../ui/Button';
 import Card from '../ui/Card';
 import styles from './QuizResult.module.css';
 
-export default function QuizResult({ session, onBack, onRetry }) {
+export default function QuizResult({ session, onBack, onRetry, onRetryIncorrect }) {
   const { subject, level, levelBySubject, questions, answers, result } = session;
   const { score, correct, total, xpEarned } = result;
 
@@ -13,6 +13,7 @@ export default function QuizResult({ session, onBack, onRetry }) {
   const color  = score === 100 ? '#facc15' : score >= 80 ? '#4ade80' : score >= 60 ? '#38bdf8' : score >= 40 ? '#fb923c' : '#ef4444';
 
   const isGrand = subject === 'grand';
+  const incorrectCount = questions.filter((q, i) => answers[i] !== q.ans).length;
 
   return (
     <div className={`${styles.wrapper} anim-scale-in`}>
@@ -82,6 +83,14 @@ export default function QuizResult({ session, onBack, onRetry }) {
 
       <div className={styles.actions}>
         <Button variant="secondary" size="lg" onClick={onBack}>← Back to Home</Button>
+        <Button
+          variant="ghost"
+          size="lg"
+          disabled={incorrectCount === 0}
+          onClick={() => onRetryIncorrect(session)}
+        >
+          Retry Incorrect ({incorrectCount})
+        </Button>
         <Button variant="primary" size="lg" onClick={() => onRetry(subject, isGrand ? levelBySubject : level)}>Retry Quiz</Button>
       </div>
     </div>
