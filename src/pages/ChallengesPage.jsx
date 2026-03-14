@@ -1,13 +1,31 @@
+import { useMemo } from 'react';
 import { useStore } from '../context/StoreContext';
 import { SUBJECT_META, LEVEL_META } from '../data/constants';
 import { SubjectBadge, LevelBadge } from '../components/ui/Badge';
-import Button    from '../components/ui/Button';
+import Button from '../components/ui/Button';
 import PageShell from '../components/layout/PageShell';
-import styles    from './ChallengesPage.module.css';
+import styles from './ChallengesPage.module.css';
 
 export default function ChallengesPage({ onStartQuiz }) {
   const { store } = useStore();
-  const challenges = store.challenges || [];
+
+  const challenges = useMemo(() => {
+    const now = Date.now();
+    return (store.challenges || [])
+      .map(ch => {
+        const startsAt = typeof ch.startsAt === 'number' ? ch.startsAt : null;
+        const endsAt = typeof ch.endsAt === 'number' ? ch.endsAt : null;
+        const expired = endsAt ? endsAt < now : false;
+        const upcoming = startsAt ? startsAt > now : false;
+        return { ...ch, startsAt, endsAt, expired, upcoming, active: !expired && !upcoming };
+      })
+      .filter(ch => !ch.expired)
+      .sort((a, b) => {
+        const aTime = a.startsAt || 0;
+        const bTime = b.startsAt || 0;
+        return aTime - bTime;
+      });
+  }, [store.challenges]);
 
   return (
     <PageShell>
@@ -37,35 +55,38 @@ export default function ChallengesPage({ onStartQuiz }) {
                 className={`${styles.card} anim-fade-up`}
                 style={{ animationDelay: `${i * 60}ms` }}
               >
-                {/* Coloured top strip */}
-                <div
-                  className={styles.strip}
-                  style={{ background: `linear-gradient(90deg, ${subMeta.color}80, ${lvlMeta.color}60)` }}
-                />
+                <div className={styles.strip} style={{ background: `linear-gradient(90deg, ${subMeta.color}80, ${lvlMeta.color}60)` }} />
 
                 <div className={styles.cardBody}>
                   <div className={styles.cardHeader}>
                     <span className={styles.cardIcon}>{subMeta.icon}</span>
                     <div className={styles.badges}>
                       <SubjectBadge subject={ch.subject} size="sm" />
-                      <LevelBadge   level={ch.level}   size="sm" />
+                      <LevelBadge level={ch.level} size="sm" />
                     </div>
                   </div>
 
                   <h3 className={styles.cardTitle}>{ch.title}</h3>
 
-                  {ch.description && (
-                    <p className={styles.cardDesc}>{ch.description}</p>
-                  )}
+                  {ch.description && <p className={styles.cardDesc}>{ch.description}</p>}
+
+                  <div className={styles.scheduleWrap}>
+                    <span className={`${styles.status} ${ch.active ? styles.statusActive : styles.statusUpcoming}`}>
+                      {ch.active ? 'Active now' : 'Starts soon'}
+                    </span>
+                    {ch.startsAt && <span className={styles.scheduleItem}>Start: {new Date(ch.startsAt).toLocaleString()}</span>}
+                    {ch.endsAt && <span className={styles.scheduleItem}>End: {new Date(ch.endsAt).toLocaleString()}</span>}
+                  </div>
 
                   <div className={styles.cardFooter}>
                     <span className={styles.cardDate}>{ch.createdAt}</span>
                     <Button
                       variant="primary"
                       size="md"
+                      disabled={!ch.active}
                       onClick={() => onStartQuiz(ch.subject, ch.level)}
                     >
-                      Accept →
+                      {ch.active ? 'Accept →' : 'Not started'}
                     </Button>
                   </div>
                 </div>

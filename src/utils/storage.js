@@ -20,6 +20,7 @@ const DEFAULT_STORE = {
   },
   customQuestions: [],
   challenges: [],
+  questionStats: {},
 };
 
 export function loadStore() {

@@ -112,10 +112,24 @@ export function useQuiz() {
 
   // ── Internal: move to next Q or finalize ────────────────────────────────
   function advanceQuestion(prev, answer) {
-    const newAnswers  = [...prev.answers, answer];
-    const timeTaken   = Math.round((Date.now() - prev.questionStart) / 1000);
-    const newTimings  = [...prev.timings, timeTaken];
-    const isLast      = prev.current === prev.questions.length - 1;
+    const newAnswers = [...prev.answers, answer];
+    const timeTaken = Math.round((Date.now() - prev.questionStart) / 1000);
+    const newTimings = [...prev.timings, timeTaken];
+    const isLast = prev.current === prev.questions.length - 1;
+
+    const currentQuestion = prev.questions[prev.current];
+    const statKey = currentQuestion
+      ? `${prev.subject}|${prev.level}|${currentQuestion.q}`
+      : null;
+    const questionStats = { ...(store.questionStats || {}) };
+    if (statKey) {
+      const prevStat = questionStats[statKey] || { attempts: 0, misses: 0, totalResponseTime: 0 };
+      questionStats[statKey] = {
+        attempts: prevStat.attempts + 1,
+        misses: prevStat.misses + (answer === currentQuestion.ans ? 0 : 1),
+        totalResponseTime: prevStat.totalResponseTime + timeTaken,
+      };
+    }
 
     if (isLast) {
       const { updatedUser, score, correct, xpEarned, newBadgeIds } = applyQuizResult(
@@ -132,7 +146,11 @@ export function useQuiz() {
       const totalTime = Math.round((Date.now() - prev.startTime) / 1000);
       updatedUser.history[0] = { ...updatedUser.history[0], timeTaken: totalTime };
 
-      persist(s => ({ ...s, users: { ...s.users, [currentUser]: updatedUser } }));
+      persist(s => ({
+        ...s,
+        users: { ...s.users, [currentUser]: updatedUser },
+        questionStats,
+      }));
 
       // Badge notifications
       newBadgeIds.forEach(id => {
@@ -149,14 +167,16 @@ export function useQuiz() {
       };
     }
 
+    persist(s => ({ ...s, questionStats }));
+
     return {
       ...prev,
-      current:       prev.current + 1,
-      answers:       newAnswers,
-      timings:       newTimings,
+      current: prev.current + 1,
+      answers: newAnswers,
+      timings: newTimings,
       selectedOption: null,
-      phase:         'answering',
-      timeLeft:      SECONDS_PER_QUESTION,
+      phase: 'answering',
+      timeLeft: SECONDS_PER_QUESTION,
       questionStart: Date.now(),
     };
   }

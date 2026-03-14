@@ -90,3 +90,10 @@
 }
 
 .cardDate { font-size: 12px; color: var(--text-muted); font-family: 'Space Mono', monospace; }
+
+
+.scheduleWrap { display: flex; flex-direction: column; gap: 6px; margin-top: 4px; }
+.status { width: fit-content; font-size: 11px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase; padding: 4px 8px; border-radius: 999px; }
+.statusActive { background: rgba(16,185,129,0.15); color: #4ade80; border: 1px solid rgba(16,185,129,0.35); }
+.statusUpcoming { background: rgba(250,204,21,0.12); color: #facc15; border: 1px solid rgba(250,204,21,0.35); }
+.scheduleItem { font-size: 12px; color: var(--text-muted); }

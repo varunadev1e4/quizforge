@@ -22,6 +22,11 @@ export default function AdminPage() {
   const totalQuizzes = Object.values(store.users).reduce((a, u) => a + (u.totalQuizzes || 0), 0);
   const totalXP      = Object.values(store.users).reduce((a, u) => a + (u.xp || 0), 0);
 
+  const activeChallenges = (store.challenges || []).filter(ch => {
+    if (typeof ch.endsAt !== 'number') return true;
+    return ch.endsAt >= Date.now();
+  }).length;
+
   // Recent activity feed from all users
   const recentActivity = Object.entries(store.users)
     .flatMap(([id, u]) =>
@@ -58,7 +63,7 @@ export default function AdminPage() {
             <StatCard icon="👥" value={totalUsers}                   label="Total Users"         color="#38bdf8" delay={0}   />
             <StatCard icon="📝" value={totalQuizzes}                 label="Total Quizzes Taken"  color="#4ade80" delay={60}  />
             <StatCard icon="❓" value={(store.customQuestions||[]).length} label="Custom Questions" color="#facc15" delay={120} />
-            <StatCard icon="⚡" value={(store.challenges||[]).length} label="Active Challenges"   color="#f472b6" delay={180} />
+            <StatCard icon="⚡" value={activeChallenges} label="Active Challenges"   color="#f472b6" delay={180} />
             <StatCard icon="⭐" value={totalXP.toLocaleString()}     label="Total XP Earned"     color="#a78bfa" delay={240} />
           </div>
 
