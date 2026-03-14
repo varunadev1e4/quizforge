@@ -1,0 +1,19 @@
+.starfield {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.star {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(167, 139, 250, 0.8);
+  animation: starFloat var(--dur, 4s) var(--delay, 0s) infinite ease-in-out;
+}
+
+@keyframes starFloat {
+  0%, 100% { transform: translateY(0px);  opacity: var(--opacity, 0.4); }
+  50%       { transform: translateY(-6px); opacity: calc(var(--opacity, 0.4) + 0.3); }
+}

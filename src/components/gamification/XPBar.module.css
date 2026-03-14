@@ -1,0 +1,49 @@
+.wrapper {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 18px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.rankInfo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.icon  { font-size: 20px; }
+.label { font-size: 16px; font-weight: 700; color: var(--text-primary); font-family: 'Rajdhani', sans-serif; letter-spacing: 0.5px; }
+.xpVal { font-size: 16px; font-weight: 700; color: #facc15; font-family: 'Space Mono', monospace; }
+
+.track {
+  height: 8px;
+  background: var(--bg-overlay);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  background: linear-gradient(90deg, #5b4fcf, #a78bfa, #f472b6);
+  transition: width 0.8s cubic-bezier(0.4,0,0.2,1);
+}
+
+.bottom {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--text-muted);
+  font-family: 'Space Mono', monospace;
+}
+
+.max { color: #facc15; font-weight: 700; letter-spacing: 1px; }

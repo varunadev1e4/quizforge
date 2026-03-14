@@ -1,0 +1,114 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(ellipse 80% 60% at 30% 20%, #12083a 0%, var(--bg-base) 55%),
+              radial-gradient(ellipse 60% 50% at 75% 80%, #083228 0%, transparent 60%);
+  padding: 24px;
+}
+
+.card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 420px;
+  background: rgba(15,15,26,0.94);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-xl);
+  padding: 44px 40px;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.04);
+  backdrop-filter: blur(24px);
+  animation: fadeUp 0.5s ease both;
+}
+
+/* ─── Logo ───────────────────────────────────────────────────────────────── */
+.logoWrap {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.logoGlyph {
+  font-size: 48px;
+  color: var(--brand-primary);
+  line-height: 1;
+  margin-bottom: 10px;
+  filter: drop-shadow(0 0 16px rgba(91,79,207,0.6));
+}
+
+.logoText {
+  font-size: 34px;
+  letter-spacing: 4px;
+  margin-bottom: 6px;
+  font-family: 'Space Mono', monospace;
+}
+
+.tagline {
+  font-size: 13px;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+}
+
+/* ─── Tabs ───────────────────────────────────────────────────────────────── */
+.tabs {
+  display: flex;
+  background: var(--bg-base);
+  border-radius: var(--radius-md);
+  padding: 4px;
+  margin-bottom: 24px;
+  gap: 4px;
+}
+
+.tab {
+  flex: 1;
+  padding: 10px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 700;
+  font-family: 'Rajdhani', sans-serif;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+}
+
+.activeTab {
+  background: var(--brand-primary);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(91,79,207,0.4);
+}
+
+/* ─── Form ───────────────────────────────────────────────────────────────── */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.error {
+  font-size: 13px;
+  color: #ef4444;
+  background: rgba(239,68,68,0.08);
+  border: 1px solid rgba(239,68,68,0.25);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+}
+
+/* ─── Demo hint ──────────────────────────────────────────────────────────── */
+.demo {
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 20px;
+}
+
+.demo code {
+  font-family: 'Space Mono', monospace;
+  color: var(--text-secondary);
+  background: var(--bg-overlay);
+  padding: 1px 5px;
+  border-radius: 4px;
+}

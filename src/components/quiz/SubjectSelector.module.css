@@ -1,0 +1,89 @@
+.wrapper { }
+
+.heading {
+  font-size: 28px;
+  margin-bottom: 6px;
+}
+
+.sub {
+  color: var(--text-muted);
+  font-size: 14px;
+  margin-bottom: 28px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+@media (max-width: 860px) { .grid { grid-template-columns: 1fr; } }
+
+/* ─── Subject Card ───────────────────────────────────────────────────────── */
+.subjectCard {
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  border: 1px solid var(--border-default);
+  background: var(--bg-surface);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.subjectCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 36px rgba(0,0,0,0.5);
+}
+
+.subjectHeader {
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.subjectIcon {
+  font-size: 48px;
+  line-height: 1;
+}
+
+.subjectLabel {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+/* ─── Level buttons ──────────────────────────────────────────────────────── */
+.levels {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.levelBtn {
+  width: 100%;
+  padding: 12px 18px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--lc, var(--border-default));
+  background: color-mix(in srgb, var(--lc, transparent) 8%, transparent);
+  color: var(--lc, var(--text-primary));
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.15s ease;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.levelBtn:hover {
+  background: color-mix(in srgb, var(--lc, transparent) 18%, transparent);
+  transform: translateX(4px);
+}
+
+.levelName { letter-spacing: 0.8px; }
+.levelXp   { font-size: 11px; opacity: 0.7; font-family: 'Space Mono', monospace; }

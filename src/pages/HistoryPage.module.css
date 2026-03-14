@@ -1,0 +1,162 @@
+.pageTitle {
+  font-size: 32px;
+  margin-bottom: 24px;
+}
+
+/* ─── Stats ──────────────────────────────────────────────────────────────── */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 24px;
+}
+@media (max-width: 860px) { .statsGrid { grid-template-columns: repeat(2, 1fr); } }
+
+/* ─── Distribution chart ─────────────────────────────────────────────────── */
+.chartCard { margin-bottom: 28px; }
+
+.chartTitle { font-size: 16px; color: var(--text-secondary); margin-bottom: 20px; }
+
+.bars {
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+  height: 120px;
+}
+
+.barCol {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  height: 100%;
+}
+
+.barWrap {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  min-height: 4px;
+}
+
+.barFill {
+  width: 100%;
+  border-radius: 4px 4px 0 0;
+  min-height: 4px;
+  transition: height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.barCount {
+  font-size: 13px;
+  font-weight: 700;
+  font-family: 'Space Mono', monospace;
+  color: var(--text-secondary);
+}
+
+.barLabel {
+  font-size: 10px;
+  color: var(--text-muted);
+  font-family: 'Space Mono', monospace;
+  white-space: nowrap;
+}
+
+/* ─── Filters ────────────────────────────────────────────────────────────── */
+.filters {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 20px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  margin-bottom: 24px;
+}
+
+.filterGroup { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+
+.filterLabel {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  min-width: 56px;
+  font-family: 'Space Mono', monospace;
+}
+
+.filterPills { display: flex; gap: 6px; flex-wrap: wrap; }
+
+.pill {
+  padding: 5px 14px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-default);
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: 'Rajdhani', sans-serif;
+  letter-spacing: 0.3px;
+}
+
+.pill:hover { border-color: var(--border-bright); color: var(--text-primary); }
+
+.pillActive {
+  border-color: var(--brand-primary);
+  color: var(--text-primary);
+  background: rgba(91,79,207,0.12);
+}
+
+.pillActiveDefault {
+  border-color: var(--brand-primary);
+  color: #a78bfa;
+  background: rgba(91,79,207,0.12);
+}
+
+/* ─── List ───────────────────────────────────────────────────────────────── */
+.list { display: flex; flex-direction: column; gap: 8px; }
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 72px;
+  background: var(--bg-surface);
+  border: 1px dashed var(--border-default);
+  border-radius: var(--radius-lg);
+  color: var(--text-muted);
+  font-size: 15px;
+}
+
+.emptyIcon { font-size: 40px; }
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  transition: border-color 0.15s, transform 0.15s;
+}
+.row:hover { border-color: var(--border-default); transform: translateX(4px); }
+
+.rowIcon { font-size: 22px; flex-shrink: 0; }
+
+.rowMain { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+
+.rowTop  { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+
+.rowMeta { font-size: 12px; color: var(--text-muted); font-family: 'Space Mono', monospace; }
+
+.rowScore {
+  font-size: 22px;
+  font-weight: 700;
+  font-family: 'Space Mono', monospace;
+  flex-shrink: 0;
+}

@@ -1,0 +1,139 @@
+.wrapper {
+  max-width: 740px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* ─── Top bar ────────────────────────────────────────────────────────────── */
+.topBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.topLeft {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.topRight { text-align: right; }
+
+.qCounter {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.qTotal {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+/* ─── Question card ──────────────────────────────────────────────────────── */
+.questionCard {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  padding: 32px 36px;
+  border-left-width: 4px;
+}
+
+.qLabel {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+  font-family: 'Space Mono', monospace;
+}
+
+.qText {
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--text-primary);
+  line-height: 1.55;
+}
+
+/* ─── Options ────────────────────────────────────────────────────────────── */
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 20px;
+  border-radius: var(--radius-lg);
+  border: 1.5px solid var(--border-default);
+  background: var(--bg-surface);
+  color: var(--text-secondary);
+  text-align: left;
+  font-size: 16px;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  width: 100%;
+}
+
+.option:not(:disabled):hover {
+  border-color: var(--border-bright);
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  transform: translateX(4px);
+}
+
+/* States */
+.option.selected {
+  border-color: var(--brand-primary);
+  background: rgba(91,79,207,0.12);
+  color: #c4b5fd;
+}
+
+.option.correct {
+  border-color: #4ade80;
+  background: rgba(74,222,128,0.1);
+  color: #4ade80;
+}
+
+.option.wrong {
+  border-color: #ef4444;
+  background: rgba(239,68,68,0.1);
+  color: #ef4444;
+}
+
+.option:disabled { cursor: default; transform: none !important; }
+
+.letter {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--bg-overlay);
+  border: 1px solid currentColor;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-family: 'Space Mono', monospace;
+  font-weight: 700;
+  flex-shrink: 0;
+  opacity: 0.8;
+}
+
+.optText { flex: 1; }
+
+.indicator {
+  font-size: 16px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* ─── Actions ────────────────────────────────────────────────────────────── */
+.actions { }

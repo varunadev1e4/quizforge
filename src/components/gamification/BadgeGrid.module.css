@@ -1,0 +1,74 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.group { }
+
+.groupTitle {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+  font-family: 'Space Mono', monospace;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 10px;
+}
+
+/* ─── Badge tile ─────────────────────────────────────────────────────────── */
+.badge {
+  position: relative;
+  padding: 16px 14px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-surface);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+  cursor: default;
+  transition: transform 0.2s ease;
+  overflow: hidden;
+}
+
+.unlocked {
+  border-color: rgba(74,222,128,0.3);
+  background: rgba(74,222,128,0.04);
+}
+
+.unlocked:hover { transform: translateY(-3px); }
+
+.locked { opacity: 0.45; }
+
+.badgeIcon {
+  font-size: 28px;
+  line-height: 1;
+}
+
+.badgeName {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.badgeDesc {
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.lockOverlay {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 12px;
+  opacity: 0.6;
+}

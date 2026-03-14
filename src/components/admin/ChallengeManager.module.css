@@ -1,0 +1,97 @@
+.wrapper {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 28px;
+  align-items: start;
+}
+
+@media (max-width: 860px) {
+  .wrapper { grid-template-columns: 1fr; }
+}
+
+/* ─── Form ───────────────────────────────────────────────────────────────── */
+.formCard { display: flex; flex-direction: column; gap: 16px; }
+
+.sectionTitle {
+  font-size: 18px;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.count { color: var(--text-muted); font-size: 14px; }
+
+.field { display: flex; flex-direction: column; gap: 6px; }
+
+.label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+}
+
+.textarea {
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-default);
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font-size: 14px;
+  font-family: inherit;
+  resize: vertical;
+  transition: border-color 0.2s;
+}
+
+.textarea:focus { border-color: var(--brand-primary); outline: none; }
+.textarea::placeholder { color: var(--text-muted); }
+
+.select {
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-default);
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font-size: 14px;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.select:focus { border-color: var(--brand-primary); outline: none; }
+
+.row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+/* ─── List ───────────────────────────────────────────────────────────────── */
+.list { display: flex; flex-direction: column; gap: 14px; }
+
+.empty {
+  text-align: center;
+  color: var(--text-muted);
+  padding: 48px;
+  background: var(--bg-surface);
+  border: 1px dashed var(--border-default);
+  border-radius: var(--radius-lg);
+}
+
+.cards { display: flex; flex-direction: column; gap: 10px; }
+
+.chCard { padding: 18px 20px; display: flex; flex-direction: column; gap: 10px; }
+
+.chTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.chTitle { font-size: 16px; font-weight: 700; color: var(--text-primary); flex: 1; }
+
+.chDesc { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+
+.chMeta {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.chDate { font-size: 11px; color: var(--text-muted); margin-left: auto; }

@@ -1,0 +1,30 @@
+.card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 20px 22px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  transition: border-color 0.2s;
+}
+
+.card:hover { border-color: var(--border-default); }
+
+.icon  { font-size: 26px; flex-shrink: 0; }
+
+.value {
+  font-size: 26px;
+  font-weight: 700;
+  font-family: 'Space Mono', monospace;
+  line-height: 1;
+}
+
+.label {
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-top: 3px;
+  display: block;
+}

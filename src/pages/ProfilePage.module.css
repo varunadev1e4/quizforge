@@ -1,0 +1,197 @@
+/* ─── Hero ───────────────────────────────────────────────────────────────── */
+.hero {
+  background: linear-gradient(135deg, #12083a 0%, #0d1a2e 60%, #08100a 100%);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-xl);
+  padding: 32px 36px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.heroLeft {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.bigAvatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #5b4fcf, #7c3aed, #f472b6);
+  color: #fff;
+  font-size: 34px;
+  font-weight: 700;
+  font-family: 'Rajdhani', sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 28px rgba(91,79,207,0.5);
+  border: 3px solid rgba(255,255,255,0.1);
+  flex-shrink: 0;
+}
+
+.name     { font-size: 28px; font-weight: 700; margin-bottom: 2px; }
+.username { font-size: 13px; color: var(--text-muted); margin-bottom: 8px; font-family: 'Space Mono', monospace; }
+
+.rankRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.rankIcon  { font-size: 18px; }
+.rankLabel { font-size: 15px; font-weight: 700; color: var(--text-secondary); }
+
+.adminTag {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 10px;
+  border-radius: var(--radius-full);
+  background: rgba(244,114,182,0.15);
+  color: #f472b6;
+  border: 1px solid rgba(244,114,182,0.3);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Hero stats */
+.heroStats {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.heroStat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.heroStatVal {
+  font-size: 24px;
+  font-weight: 700;
+  font-family: 'Space Mono', monospace;
+  line-height: 1;
+}
+
+.heroStatLbl {
+  font-size: 10px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  white-space: nowrap;
+}
+
+/* ─── Sections ───────────────────────────────────────────────────────────── */
+.section { margin-bottom: 24px; }
+
+.sectionTitle { font-size: 18px; color: var(--text-secondary); margin-bottom: 18px; }
+
+/* ─── Subject grid ───────────────────────────────────────────────────────── */
+.subjectGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 680px) { .subjectGrid { grid-template-columns: 1fr; } }
+
+.subjectCard {
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-subtle);
+  overflow: hidden;
+}
+
+.subjectTop {
+  padding: 18px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.subjectIcon { font-size: 24px; }
+.subjectName { font-size: 16px; font-weight: 700; color: #fff; letter-spacing: 1px; }
+
+.subjectBody {
+  padding: 14px 16px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.subjectStat { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+
+.subjectStatVal {
+  font-size: 20px;
+  font-weight: 700;
+  font-family: 'Space Mono', monospace;
+  color: var(--text-primary);
+}
+
+.subjectStatLbl { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+
+/* ─── Level grid ─────────────────────────────────────────────────────────── */
+.levelGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.levelRow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.levelName {
+  width: 70px;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: 'Rajdhani', sans-serif;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+}
+
+.levelBarTrack {
+  flex: 1;
+  height: 8px;
+  background: var(--bg-overlay);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.levelBarFill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  min-width: 4px;
+  transition: width 0.7s cubic-bezier(0.4,0,0.2,1);
+}
+
+.levelCount {
+  width: 28px;
+  text-align: right;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: 'Space Mono', monospace;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+
+/* ─── Badges ─────────────────────────────────────────────────────────────── */
+.badgesHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.badgeCount {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-family: 'Space Mono', monospace;
+}

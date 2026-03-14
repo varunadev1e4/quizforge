@@ -1,0 +1,75 @@
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 860px) { .statsGrid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px) { .statsGrid { grid-template-columns: 1fr 1fr; } }
+
+.xpSection { margin-bottom: 32px; }
+
+.section { margin-bottom: 36px; }
+
+/* ─── Bottom grid ────────────────────────────────────────────────────────── */
+.bottomGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+@media (max-width: 760px) { .bottomGrid { grid-template-columns: 1fr; } }
+
+.panelCard { padding: 22px; }
+
+.panelHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.panelTitle { font-size: 17px; color: var(--text-primary); }
+
+.emptyNote { font-size: 13px; color: var(--text-muted); text-align: center; padding: 20px 0; }
+
+/* ─── History list ───────────────────────────────────────────────────────── */
+.historyList { display: flex; flex-direction: column; gap: 10px; }
+
+.historyRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.historyRow:last-child { border-bottom: none; }
+
+.histIcon   { font-size: 18px; flex-shrink: 0; }
+.histInfo   { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+.histSubject { font-size: 14px; font-weight: 600; color: var(--text-primary); text-transform: capitalize; }
+.histMeta    { font-size: 11px; color: var(--text-muted); text-transform: capitalize; }
+.histScore   { font-size: 16px; font-weight: 700; font-family: 'Space Mono', monospace; }
+.histXP      { font-size: 11px; color: #facc15; font-family: 'Space Mono', monospace; min-width: 50px; text-align: right; }
+
+/* ─── Challenge list ─────────────────────────────────────────────────────── */
+.challengeList { display: flex; flex-direction: column; gap: 8px; }
+
+.challengeRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-base);
+  cursor: pointer;
+  transition: border-color 0.15s, transform 0.15s;
+}
+.challengeRow:hover { border-color: var(--border-bright); transform: translateX(4px); }
+
+.challengeInfo  { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+.challengeTitle { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+.challengeMeta  { display: flex; gap: 6px; }
+.challengeArrow { color: var(--text-muted); font-size: 16px; }

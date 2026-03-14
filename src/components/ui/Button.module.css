@@ -1,0 +1,66 @@
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  border-radius: var(--radius-md);
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease, background 0.15s ease;
+  white-space: nowrap;
+}
+
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.btn:not(:disabled):hover  { transform: translateY(-2px); }
+.btn:not(:disabled):active { transform: translateY(0); }
+
+/* ─── Sizes ─────────────────────────────────────────────────────────────── */
+.sm { font-size: 13px; padding: 6px 14px;  border-radius: var(--radius-sm); }
+.md { font-size: 15px; padding: 10px 22px; }
+.lg { font-size: 17px; padding: 14px 32px; border-radius: var(--radius-lg); }
+
+.full { width: 100%; }
+
+/* ─── Variants ───────────────────────────────────────────────────────────── */
+.primary {
+  background: linear-gradient(135deg, #5b4fcf, #7c3aed);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(91,79,207,0.4);
+}
+.primary:not(:disabled):hover { box-shadow: 0 6px 24px rgba(91,79,207,0.55); }
+
+.secondary {
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  border: 1px solid var(--border-default);
+}
+.secondary:not(:disabled):hover { border-color: var(--border-bright); background: var(--bg-overlay); }
+
+.ghost {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid transparent;
+}
+.ghost:not(:disabled):hover { color: var(--text-primary); border-color: var(--border-default); background: var(--bg-elevated); }
+
+.danger {
+  background: rgba(239,68,68,0.15);
+  color: #ef4444;
+  border: 1px solid rgba(239,68,68,0.3);
+}
+.danger:not(:disabled):hover { background: rgba(239,68,68,0.25); }
+
+.success {
+  background: linear-gradient(135deg, #059669, #10b981);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(16,185,129,0.35);
+}
+.success:not(:disabled):hover { box-shadow: 0 6px 22px rgba(16,185,129,0.5); }
