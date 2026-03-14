@@ -151,6 +151,7 @@ export default function HistoryPage() {
                   <div className={styles.rowTop}>
                     <SubjectBadge subject={h.subject} />
                     <LevelBadge   level={h.level} />
+                    {h.subtopic && h.subtopic !== 'all' && <span className={styles.topicChip}>{h.subtopic}</span>}
                   </div>
                   <div className={styles.rowMeta}>
                     {h.correct}/{h.total} correct

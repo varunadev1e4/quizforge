@@ -21,6 +21,16 @@
   flex-wrap: wrap;
 }
 
+.topicPill {
+  border: 1px solid var(--border-default);
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 11px;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
 .topRight { text-align: right; }
 
 .qCounter {

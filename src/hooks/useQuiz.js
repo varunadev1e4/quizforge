@@ -19,12 +19,13 @@ export function useQuiz() {
   const timerRef = useRef(null);
 
   // ── Start a quiz ────────────────────────────────────────────────────────
-  const startQuiz = useCallback((subject, level) => {
-    const questions = getQuizQuestions(subject, level, store.customQuestions);
+  const startQuiz = useCallback((subject, level, options = {}) => {
+    const questions = getQuizQuestions(subject, level, store.customQuestions, options);
     const normalizedLevel = subject === 'grand' ? getGrandLevelLabel(level) : level;
     setQuizSession({
       subject,
       level: normalizedLevel,
+      subtopic: subject === 'grand' ? null : (options.subtopic || 'all'),
       levelBySubject: subject === 'grand' ? level : null,
       questions,
       current: 0,
@@ -48,6 +49,7 @@ export function useQuiz() {
     setQuizSession({
       subject: session.subject,
       level: session.level,
+      subtopic: session.subtopic || 'all',
       levelBySubject: session.levelBySubject || null,
       questions: wrongQuestions,
       current: 0,
@@ -137,6 +139,7 @@ export function useQuiz() {
         {
           subject: prev.subject,
           level: prev.level,
+          subtopic: prev.subtopic,
           levelBySubject: prev.levelBySubject,
           answers: newAnswers,
           questions: prev.questions,

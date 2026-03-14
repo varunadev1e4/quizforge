@@ -5,7 +5,7 @@ import Card from '../ui/Card';
 import styles from './QuizResult.module.css';
 
 export default function QuizResult({ session, onBack, onRetry, onRetryIncorrect }) {
-  const { subject, level, levelBySubject, questions, answers, result } = session;
+  const { subject, level, subtopic, levelBySubject, questions, answers, result } = session;
   const { score, correct, total, xpEarned } = result;
 
   const emoji  = score === 100 ? '🏆' : score >= 80 ? '🌟' : score >= 60 ? '👍' : score >= 40 ? '💪' : '📚';
@@ -26,6 +26,7 @@ export default function QuizResult({ session, onBack, onRetry, onRetryIncorrect 
         <div className={styles.badges}>
           <SubjectBadge subject={subject} size="md" />
           <LevelBadge level={level} size="md" />
+          {!isGrand && subtopic && subtopic !== 'all' && <span>{subtopic}</span>}
         </div>
         {isGrand && (
           <div className={styles.badges}>
@@ -91,7 +92,13 @@ export default function QuizResult({ session, onBack, onRetry, onRetryIncorrect 
         >
           Retry Incorrect ({incorrectCount})
         </Button>
-        <Button variant="primary" size="lg" onClick={() => onRetry(subject, isGrand ? levelBySubject : level)}>Retry Quiz</Button>
+        <Button
+          variant="primary"
+          size="lg"
+          onClick={() => onRetry(subject, isGrand ? levelBySubject : level, { subtopic })}
+        >
+          Retry Quiz
+        </Button>
       </div>
     </div>
   );

@@ -1,6 +1,31 @@
 // ─── Subject & Level Metadata ──────────────────────────────────────────────
 export const SUBJECTS = ['math', 'physics', 'chemistry'];
 
+export const SUBJECT_SUBTOPICS = {
+  math: ['all', 'algebra', 'trigonometry', 'geometry', 'calculus', 'statistics'],
+  physics: ['all', 'mechanics', 'electricity', 'waves', 'thermodynamics', 'modern'],
+  chemistry: ['all', 'atomic', 'bonding', 'reactions', 'organic', 'physical'],
+};
+
+export const SUBTOPIC_META = {
+  all: { label: 'All Topics' },
+  algebra: { label: 'Algebra' },
+  trigonometry: { label: 'Trigonometry' },
+  geometry: { label: 'Geometry' },
+  calculus: { label: 'Calculus' },
+  statistics: { label: 'Statistics' },
+  mechanics: { label: 'Mechanics' },
+  electricity: { label: 'Electricity & Magnetism' },
+  waves: { label: 'Waves & Optics' },
+  thermodynamics: { label: 'Thermodynamics' },
+  modern: { label: 'Modern Physics' },
+  atomic: { label: 'Atomic Structure' },
+  bonding: { label: 'Bonding' },
+  reactions: { label: 'Chemical Reactions' },
+  organic: { label: 'Organic Chemistry' },
+  physical: { label: 'Physical Chemistry' },
+};
+
 export const LEVELS = ['easy', 'medium', 'hard', 'master', 'expert'];
 
 export const SUBJECT_META = {
@@ -71,4 +96,3 @@ export function getNextRank(xp) {
   }
   return null;
 }
-
