@@ -21,6 +21,10 @@ export function useQuiz() {
   // ── Start a quiz ────────────────────────────────────────────────────────
   const startQuiz = useCallback((subject, level, options = {}) => {
     const questions = getQuizQuestions(subject, level, store.customQuestions, options);
+    if (!questions.length) {
+      notify('Questions are not available at the moment. Tests will be coming soon!', 'info');
+      return false;
+    }
     const normalizedLevel = subject === 'grand' ? getGrandLevelLabel(level) : level;
     setQuizSession({
       subject,
@@ -38,7 +42,8 @@ export function useQuiz() {
       timings: [],
       result: null,
     });
-  }, [store.customQuestions]);
+    return true;
+  }, [notify, store.customQuestions]);
 
   const retryIncorrect = useCallback((session) => {
     if (!session?.questions?.length || !session?.answers?.length) return false;
