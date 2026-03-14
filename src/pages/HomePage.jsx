@@ -9,6 +9,7 @@ import { SubjectBadge, LevelBadge } from '../components/ui/Badge';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import PageShell from '../components/layout/PageShell';
+import { getPracticeRecommendation } from '../utils/recommendations';
 import styles from './HomePage.module.css';
 
 export default function HomePage({ onStartQuiz, setPage }) {
@@ -17,6 +18,7 @@ export default function HomePage({ onStartQuiz, setPage }) {
 
   const recentHistory = (user?.history || []).slice(0, 5);
   const activeChallenges = (store.challenges || []).slice(0, 3);
+  const recommended = getPracticeRecommendation(user?.history || []);
 
   return (
     <PageShell>
@@ -37,6 +39,20 @@ export default function HomePage({ onStartQuiz, setPage }) {
       <section className={`${styles.section} anim-fade-up`} style={{ animationDelay: '260ms' }}>
         <SubjectSelector onStart={onStartQuiz} />
       </section>
+
+      <Card elevated className={`${styles.panelCard} anim-fade-up`} style={{ animationDelay: '280ms' }}>
+        <div className={styles.panelHeader}>
+          <h3 className={styles.panelTitle}>🧭 Smart Practice Recommendation</h3>
+          <Button size="sm" variant="primary" onClick={() => onStartQuiz(recommended.subject, recommended.level)}>
+            Start Recommended Quiz
+          </Button>
+        </div>
+        <p className={styles.emptyNote}>Based on your recent attempts, this combo should improve retention fastest:</p>
+        <div className={styles.challengeMeta}>
+          <SubjectBadge subject={recommended.subject} />
+          <LevelBadge level={recommended.level} />
+        </div>
+      </Card>
 
       {/* ── Bottom panels: recent history + active challenges ──────── */}
       <div className={styles.bottomGrid}>

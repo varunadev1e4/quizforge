@@ -4,7 +4,7 @@ import PageShell    from '../components/layout/PageShell';
 import Button       from '../components/ui/Button';
 import styles       from './QuizPage.module.css';
 
-export default function QuizPage({ session, onExit, onSelect, onConfirm, onNext, onRetry }) {
+export default function QuizPage({ session, onExit, onSelect, onConfirm, onNext, onRetry, onRetryIncorrect }) {
 
   if (!session) {
     return (
@@ -24,6 +24,7 @@ export default function QuizPage({ session, onExit, onSelect, onConfirm, onNext,
           session={session}
           onBack={onExit}
           onRetry={onRetry}
+          onRetryIncorrect={onRetryIncorrect}
         />
       </PageShell>
     );
