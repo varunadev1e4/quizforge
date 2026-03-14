@@ -7,7 +7,7 @@ import styles from './QuizQuestion.module.css';
 
 const OPTION_LETTERS = ['A', 'B', 'C', 'D'];
 
-export default function QuizQuestion({ session, onSelect, onConfirm, onNext }) {
+export default function QuizQuestion({ session, onSelect, onConfirm, onNext, onSkip }) {
   const { subject, level, subtopic, questions, current, selectedOption, phase, timeLeft } = session;
   const q = questions[current];
 
@@ -87,15 +87,26 @@ export default function QuizQuestion({ session, onSelect, onConfirm, onNext }) {
 
       <div className={styles.actions}>
         {!confirmed ? (
-          <Button
-            variant="primary"
-            size="lg"
-            full
-            disabled={selectedOption === null}
-            onClick={onConfirm}
-          >
-            Confirm Answer
-          </Button>
+          <>
+            <Button
+              variant="primary"
+              size="lg"
+              full
+              disabled={selectedOption === null}
+              onClick={onConfirm}
+            >
+              Confirm Answer
+            </Button>
+            <Button
+              variant="ghost"
+              size="md"
+              full
+              className={styles.skipBtn}
+              onClick={onSkip}
+            >
+              Skip Question
+            </Button>
+          </>
         ) : (
           <Button
             variant="success"

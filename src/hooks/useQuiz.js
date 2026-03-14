@@ -117,6 +117,14 @@ export function useQuiz() {
     });
   }, []);
 
+  // ── Skip current question ────────────────────────────────────────────────
+  const skipQuestion = useCallback(() => {
+    setQuizSession(prev => {
+      if (!prev || prev.phase !== 'answering') return prev;
+      return advanceQuestion(prev, -1);
+    });
+  }, []);
+
   // ── Internal: move to next Q or finalize ────────────────────────────────
   function advanceQuestion(prev, answer) {
     const newAnswers = [...prev.answers, answer];
@@ -191,5 +199,14 @@ export function useQuiz() {
 
   const exitQuiz = useCallback(() => setQuizSession(null), []);
 
-  return { quizSession, startQuiz, retryIncorrect, selectOption, confirmAnswer, nextQuestion, exitQuiz };
+  return {
+    quizSession,
+    startQuiz,
+    retryIncorrect,
+    selectOption,
+    confirmAnswer,
+    nextQuestion,
+    skipQuestion,
+    exitQuiz,
+  };
 }

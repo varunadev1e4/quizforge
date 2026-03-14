@@ -1,13 +1,25 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import { useStore } from './StoreContext';
 import { createUser } from '../utils/storage';
 
 const AuthContext = createContext(null);
+const SESSION_USER_KEY = 'quizforge.currentUser';
 
 export function AuthProvider({ children }) {
   const { store, persist, isLoading } = useStore();
   const [currentUser, setCurrentUser] = useState(null);
   const [authError, setAuthError] = useState('');
+
+  useEffect(() => {
+    if (isLoading) return;
+
+    const savedUser = window.localStorage.getItem(SESSION_USER_KEY);
+    if (savedUser && store.users[savedUser]) {
+      setCurrentUser(savedUser);
+    } else if (savedUser) {
+      window.localStorage.removeItem(SESSION_USER_KEY);
+    }
+  }, [isLoading, store.users]);
 
   function login(username, password) {
     if (isLoading) {
@@ -22,6 +34,7 @@ export function AuthProvider({ children }) {
     }
     setAuthError('');
     setCurrentUser(username);
+    window.localStorage.setItem(SESSION_USER_KEY, username);
     return true;
   }
 
@@ -50,11 +63,13 @@ export function AuthProvider({ children }) {
     }));
     setAuthError('');
     setCurrentUser(username);
+    window.localStorage.setItem(SESSION_USER_KEY, username);
     return true;
   }
 
   function logout() {
     setCurrentUser(null);
+    window.localStorage.removeItem(SESSION_USER_KEY);
   }
 
   const user = currentUser ? store.users[currentUser] : null;
