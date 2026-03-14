@@ -105,6 +105,9 @@ export default function QuestionManager() {
   const { store, persist } = useStore();
   const { notify } = useNotification();
   const [form, setForm] = useState(EMPTY_Q);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [subjectFilter, setSubjectFilter] = useState('all');
+  const [levelFilter, setLevelFilter] = useState('all');
   const fileRef = useRef(null);
 
   function setField(k, v) { setForm(p => ({ ...p, [k]: v })); }
@@ -187,6 +190,19 @@ export default function QuestionManager() {
     });
   }, [store.customQuestions, questionStats]);
 
+  const filteredQuestions = useMemo(() => {
+    const normalizedSearch = searchTerm.trim().toLowerCase();
+
+    return enrichedQuestions.filter(q => {
+      const matchesSearch = !normalizedSearch
+        || q.q.toLowerCase().includes(normalizedSearch)
+        || q.opts.some(opt => opt.toLowerCase().includes(normalizedSearch));
+      const matchesSubject = subjectFilter === 'all' || q.subject === subjectFilter;
+      const matchesLevel = levelFilter === 'all' || q.level === levelFilter;
+      return matchesSearch && matchesSubject && matchesLevel;
+    });
+  }, [enrichedQuestions, levelFilter, searchTerm, subjectFilter]);
+
   const sel = { padding: '10px 14px', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-default)', background: 'var(--bg-base)', color: 'var(--text-primary)', fontSize: 14, fontFamily: 'inherit', cursor: 'pointer', width: '100%' };
   const inp = { width: '100%', padding: '10px 14px', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-default)', background: 'var(--bg-base)', color: 'var(--text-primary)', fontSize: 14, fontFamily: 'inherit' };
 
@@ -244,11 +260,31 @@ export default function QuestionManager() {
           Custom Questions <span className={styles.count}>({enrichedQuestions.length})</span>
         </h3>
 
+        <div className={styles.filterBar}>
+          <input
+            className={styles.searchInput}
+            type="search"
+            placeholder="Search by question text or option..."
+            value={searchTerm}
+            onChange={e => setSearchTerm(e.target.value)}
+          />
+          <select className={styles.filterSelect} value={subjectFilter} onChange={e => setSubjectFilter(e.target.value)}>
+            <option value="all">All subjects</option>
+            {SUBJECTS.map(s => <option key={s} value={s}>{SUBJECT_META[s].label}</option>)}
+          </select>
+          <select className={styles.filterSelect} value={levelFilter} onChange={e => setLevelFilter(e.target.value)}>
+            <option value="all">All levels</option>
+            {LEVELS.map(l => <option key={l} value={l}>{LEVEL_META[l].label}</option>)}
+          </select>
+        </div>
+
         {enrichedQuestions.length === 0 ? (
           <div className={styles.empty}>No custom questions yet.</div>
+        ) : filteredQuestions.length === 0 ? (
+          <div className={styles.empty}>No questions match your current filters.</div>
         ) : (
           <div className={styles.qList}>
-            {enrichedQuestions.map(q => (
+            {filteredQuestions.map(q => (
               <Card key={q.id} className={styles.qCard}>
                 <div className={styles.qTop}>
                   <p className={styles.qText}>{q.q}</p>

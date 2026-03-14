@@ -71,6 +71,40 @@
 /* ─── List col ───────────────────────────────────────────────────────────── */
 .listCol { display: flex; flex-direction: column; gap: 14px; }
 
+.filterBar {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr;
+  gap: 10px;
+}
+
+@media (max-width: 1100px) {
+  .filterBar {
+    grid-template-columns: 1fr;
+  }
+}
+
+.searchInput,
+.filterSelect {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-default);
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font-size: 14px;
+  font-family: inherit;
+}
+
+.searchInput::placeholder {
+  color: var(--text-muted);
+}
+
+.searchInput:focus,
+.filterSelect:focus {
+  border-color: var(--brand-primary);
+  outline: none;
+}
+
 .empty {
   text-align: center;
   color: var(--text-muted);
