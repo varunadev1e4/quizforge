@@ -63,8 +63,8 @@ function AuthenticatedApp() {
   // Redirect to quiz page automatically when a session starts
   const activePage = quizSession ? 'quiz' : page;
 
-  function handleStartQuiz(subject, level) {
-    startQuiz(subject, level);
+  function handleStartQuiz(subject, level, options) {
+    startQuiz(subject, level, options);
     // page will switch automatically via activePage
   }
 
