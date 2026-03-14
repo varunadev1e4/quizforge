@@ -27,12 +27,22 @@ function normalizeQuestion(raw, fallbackIdPrefix = 'cq') {
   const opts = Array.isArray(raw.opts) ? raw.opts.slice(0, 4) : [];
   if (opts.length !== 4) return null;
 
-  const subject = SUBJECTS.includes(raw.subject) ? raw.subject : null;
-  const level = LEVELS.includes(raw.level) ? raw.level : null;
+  const normalizeToken = value => (typeof value === 'string' ? value.trim().toLowerCase() : '');
+  const normalizedSubject = normalizeToken(raw.subject);
+  const normalizedLevel = normalizeToken(raw.level);
+  const subject = SUBJECTS.includes(normalizedSubject) ? normalizedSubject : null;
+  const level = LEVELS.includes(normalizedLevel) ? normalizedLevel : null;
   const questionText = typeof raw.q === 'string' ? raw.q.trim() : '';
   const ans = Number(raw.ans);
   const allowedSubtopics = SUBJECT_SUBTOPICS[subject] || ['all'];
-  const subtopic = allowedSubtopics.includes(raw.subtopic) ? raw.subtopic : 'all';
+  const normalizedSubtopic = normalizeToken(raw.subtopic);
+  const subtopicByLabel = allowedSubtopics.find((key) => {
+    const label = SUBTOPIC_META[key]?.label;
+    return typeof label === 'string' && label.trim().toLowerCase() === normalizedSubtopic;
+  });
+  const subtopic = allowedSubtopics.includes(normalizedSubtopic)
+    ? normalizedSubtopic
+    : (subtopicByLabel || 'all');
 
   if (!subject || !level || !questionText || opts.some(opt => typeof opt !== 'string' || !opt.trim())) return null;
   if (!Number.isInteger(ans) || ans < 0 || ans > 3) return null;
