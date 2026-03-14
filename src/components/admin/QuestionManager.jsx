@@ -1,5 +1,5 @@
 import { useMemo, useRef, useState } from 'react';
-import { SUBJECTS, LEVELS, SUBJECT_META, LEVEL_META } from '../../data/constants';
+import { SUBJECTS, LEVELS, SUBJECT_SUBTOPICS, SUBTOPIC_META, SUBJECT_META, LEVEL_META } from '../../data/constants';
 import { useStore } from '../../context/StoreContext';
 import { useNotification } from '../../context/NotificationContext';
 import { SubjectBadge, LevelBadge } from '../ui/Badge';
@@ -8,7 +8,7 @@ import Card from '../ui/Card';
 import styles from './QuestionManager.module.css';
 
 const EMPTY_Q = {
-  subject: 'math', level: 'medium',
+  subject: 'math', level: 'medium', subtopic: 'all',
   q: '', opts: ['', '', '', ''], ans: 0,
 };
 
@@ -31,6 +31,8 @@ function normalizeQuestion(raw, fallbackIdPrefix = 'cq') {
   const level = LEVELS.includes(raw.level) ? raw.level : null;
   const questionText = typeof raw.q === 'string' ? raw.q.trim() : '';
   const ans = Number(raw.ans);
+  const allowedSubtopics = SUBJECT_SUBTOPICS[subject] || ['all'];
+  const subtopic = allowedSubtopics.includes(raw.subtopic) ? raw.subtopic : 'all';
 
   if (!subject || !level || !questionText || opts.some(opt => typeof opt !== 'string' || !opt.trim())) return null;
   if (!Number.isInteger(ans) || ans < 0 || ans > 3) return null;
@@ -40,6 +42,7 @@ function normalizeQuestion(raw, fallbackIdPrefix = 'cq') {
     subject,
     level,
     q: questionText,
+    subtopic,
     opts: opts.map(opt => opt.trim()),
     ans,
   };
@@ -82,7 +85,7 @@ function parseCsvQuestions(csvText) {
   if (lines.length < 2) return [];
 
   const [header, ...rows] = lines;
-  const expected = ['subject', 'level', 'question', 'option_a', 'option_b', 'option_c', 'option_d', 'answer_index'];
+  const expected = ['subject', 'level', 'subtopic', 'question', 'option_a', 'option_b', 'option_c', 'option_d', 'answer_index'];
   const normalizedHeader = parseCsvLine(header).map(v => v.trim().toLowerCase());
   const isMatchingHeader = expected.every((col, i) => normalizedHeader[i] === col);
   const dataRows = isMatchingHeader ? rows : lines;
@@ -90,13 +93,16 @@ function parseCsvQuestions(csvText) {
   return dataRows.map((line, i) => {
     const parts = parseCsvLine(line);
     if (parts.length < 8) return null;
+    const hasSubtopic = parts.length >= 9;
+    const offset = hasSubtopic ? 1 : 0;
     return normalizeQuestion({
       id: `cq_csv_${Date.now()}_${i}`,
       subject: parts[0],
       level: parts[1],
-      q: parts[2],
-      opts: parts.slice(3, 7),
-      ans: Number(parts[7]),
+      subtopic: hasSubtopic ? parts[2] : 'all',
+      q: parts[2 + offset],
+      opts: parts.slice(3 + offset, 7 + offset),
+      ans: Number(parts[7 + offset]),
     }, 'cq_csv');
   }).filter(Boolean);
 }
@@ -122,7 +128,8 @@ export default function QuestionManager() {
     if (!form.q.trim()) return notify('Question text required', 'error');
     if (form.opts.some(o => !o.trim())) return notify('All 4 options required', 'error');
 
-    const q = { ...form, id: `cq_${Date.now()}` };
+    const q = normalizeQuestion({ ...form, id: `cq_${Date.now()}` }, 'cq');
+    if (!q) return notify('Invalid question format', 'error');
     persist(s => ({ ...s, customQuestions: [...(s.customQuestions || []), q] }));
     notify('Question added ✓');
     setForm(EMPTY_Q);
@@ -140,9 +147,9 @@ export default function QuestionManager() {
   }
 
   function handleExportCsv() {
-    const header = 'subject,level,question,option_a,option_b,option_c,option_d,answer_index';
+    const header = 'subject,level,subtopic,question,option_a,option_b,option_c,option_d,answer_index';
     const rows = (store.customQuestions || []).map(q => {
-      const escaped = [q.subject, q.level, q.q, ...q.opts, q.ans]
+      const escaped = [q.subject, q.level, q.subtopic || 'all', q.q, ...q.opts, q.ans]
         .map(value => `"${String(value).replaceAll('"', '""')}"`)
         .join(',');
       return escaped;
@@ -221,7 +228,7 @@ export default function QuestionManager() {
         <div className={styles.row}>
           <div>
             <label className={styles.label}>Subject</label>
-            <select style={sel} value={form.subject} onChange={e => setField('subject', e.target.value)}>
+            <select style={sel} value={form.subject} onChange={e => setForm(prev => ({ ...prev, subject: e.target.value, subtopic: 'all' }))}>
               {SUBJECTS.map(s => <option key={s} value={s}>{SUBJECT_META[s].label}</option>)}
             </select>
           </div>
@@ -229,6 +236,14 @@ export default function QuestionManager() {
             <label className={styles.label}>Difficulty</label>
             <select style={sel} value={form.level} onChange={e => setField('level', e.target.value)}>
               {LEVELS.map(l => <option key={l} value={l}>{LEVEL_META[l].label}</option>)}
+            </select>
+          </div>
+          <div>
+            <label className={styles.label}>Subtopic</label>
+            <select style={sel} value={form.subtopic} onChange={e => setField('subtopic', e.target.value)}>
+              {(SUBJECT_SUBTOPICS[form.subject] || ['all']).map(topic => (
+                <option key={topic} value={topic}>{SUBTOPIC_META[topic]?.label || topic}</option>
+              ))}
             </select>
           </div>
         </div>
@@ -305,6 +320,7 @@ export default function QuestionManager() {
                 <div className={styles.qMeta}>
                   <SubjectBadge subject={q.subject} />
                   <LevelBadge level={q.level} />
+                  {q.subtopic && q.subtopic !== 'all' && <span className={styles.metric}>{SUBTOPIC_META[q.subtopic]?.label || q.subtopic}</span>}
                 </div>
               </Card>
             ))}

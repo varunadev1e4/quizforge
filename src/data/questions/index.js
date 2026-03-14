@@ -56,8 +56,14 @@ function filterBySubtopic(subject, subtopic, questions) {
   const rules = SUBTOPIC_MATCHERS[subject]?.[subtopic];
   if (!rules?.length) return questions;
 
-  const filtered = questions.filter(q => rules.some(rule => rule.test(q.q)));
-  return filtered.length >= 8 ? filtered : questions;
+  return questions.filter((q) => {
+    // Prefer explicit question metadata when available (custom import/editor).
+    if (typeof q.subtopic === 'string' && q.subtopic) {
+      return q.subtopic === subtopic;
+    }
+    // Fallback for built-in questions that don't carry subtopic metadata yet.
+    return rules.some(rule => rule.test(q.q));
+  });
 }
 
 function getGrandQuizQuestions(levelBySubject, customQuestions = []) {
