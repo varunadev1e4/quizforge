@@ -86,7 +86,14 @@ function AuthenticatedApp() {
       <NotificationToast />
 
       {activePage === 'quiz' && (
-        <QuizPage session={quizSession} onExit={handleExitQuiz} />
+        <QuizPage
+          session={quizSession}
+          onExit={handleExitQuiz}
+          onSelect={selectOption}
+          onConfirm={confirmAnswer}
+          onNext={nextQuestion}
+          onRetry={startQuiz}
+        />
       )}
       {activePage === 'home' && (
         <HomePage onStartQuiz={handleStartQuiz} setPage={handleSetPage} />

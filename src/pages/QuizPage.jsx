@@ -1,13 +1,10 @@
-import { useEffect } from 'react';
-import { useQuiz } from '../hooks/useQuiz';
 import QuizQuestion from '../components/quiz/QuizQuestion';
 import QuizResult   from '../components/quiz/QuizResult';
 import PageShell    from '../components/layout/PageShell';
 import Button       from '../components/ui/Button';
 import styles       from './QuizPage.module.css';
 
-export default function QuizPage({ session, onExit }) {
-  const { selectOption, confirmAnswer, nextQuestion, startQuiz } = useQuiz();
+export default function QuizPage({ session, onExit, onSelect, onConfirm, onNext, onRetry }) {
 
   if (!session) {
     return (
@@ -26,7 +23,7 @@ export default function QuizPage({ session, onExit }) {
         <QuizResult
           session={session}
           onBack={onExit}
-          onRetry={(subject, level) => startQuiz(subject, level)}
+          onRetry={onRetry}
         />
       </PageShell>
     );
@@ -39,9 +36,9 @@ export default function QuizPage({ session, onExit }) {
       </div>
       <QuizQuestion
         session={session}
-        onSelect={selectOption}
-        onConfirm={confirmAnswer}
-        onNext={nextQuestion}
+        onSelect={onSelect}
+        onConfirm={onConfirm}
+        onNext={onNext}
       />
     </PageShell>
   );
