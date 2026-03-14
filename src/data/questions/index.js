@@ -1,9 +1,4 @@
-import math from './math';
-import physics from './physics';
-import chemistry from './chemistry';
 import { QUESTIONS_PER_QUIZ, SUBJECTS } from '../constants';
-
-export const QUESTION_BANK = { math, physics, chemistry };
 
 const SUBTOPIC_MATCHERS = {
   math: {
@@ -45,9 +40,11 @@ export function getQuizQuestions(subject, level, customQuestions = [], options =
   }
 
   const subtopic = options.subtopic ?? 'all';
-  const base = [...(QUESTION_BANK[subject]?.[level] ?? [])];
-  const custom = customQuestions.filter(q => q.subject === subject && q.level === level);
-  const pool = filterBySubtopic(subject, subtopic, [...base, ...custom]);
+  const pool = filterBySubtopic(
+    subject,
+    subtopic,
+    customQuestions.filter(q => q.subject === subject && q.level === level)
+  );
   return shuffle(pool).slice(0, QUESTIONS_PER_QUIZ);
 }
 
@@ -61,7 +58,6 @@ function filterBySubtopic(subject, subtopic, questions) {
     if (typeof q.subtopic === 'string' && q.subtopic) {
       return q.subtopic === subtopic;
     }
-    // Fallback for built-in questions that don't carry subtopic metadata yet.
     return rules.some(rule => rule.test(q.q));
   });
 }
@@ -73,12 +69,11 @@ function getGrandQuizQuestions(levelBySubject, customQuestions = []) {
   const selected = SUBJECTS.flatMap((subject, idx) => {
     const level = levelBySubject[subject] ?? 'medium';
     const take = perSubject + (idx < remainder ? 1 : 0);
-    const base = [...(QUESTION_BANK[subject]?.[level] ?? [])].map(q => ({ ...q, subject, level }));
     const custom = customQuestions
       .filter(q => q.subject === subject && q.level === level)
       .map(q => ({ ...q, subject, level }));
 
-    return shuffle([...base, ...custom]).slice(0, take);
+    return shuffle(custom).slice(0, take);
   });
 
   return shuffle(selected).slice(0, QUESTIONS_PER_QUIZ);
