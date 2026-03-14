@@ -5,11 +5,16 @@ import { createUser } from '../utils/storage';
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-  const { store, persist } = useStore();
+  const { store, persist, isLoading } = useStore();
   const [currentUser, setCurrentUser] = useState(null);
-  const [authError, setAuthError]     = useState('');
+  const [authError, setAuthError] = useState('');
 
   function login(username, password) {
+    if (isLoading) {
+      setAuthError('Please wait, still connecting to database.');
+      return false;
+    }
+
     const u = store.users[username];
     if (!u || u.password !== password) {
       setAuthError('Invalid username or password.');
@@ -21,6 +26,11 @@ export function AuthProvider({ children }) {
   }
 
   function register(username, password, displayName) {
+    if (isLoading) {
+      setAuthError('Please wait, still connecting to database.');
+      return false;
+    }
+
     if (store.users[username]) {
       setAuthError('Username already taken.');
       return false;
@@ -34,7 +44,7 @@ export function AuthProvider({ children }) {
       return false;
     }
     const newUser = createUser(username, password, displayName);
-    persist(s => ({
+    persist((s) => ({
       ...s,
       users: { ...s.users, [username]: newUser },
     }));
