@@ -1,4 +1,4 @@
-import { LEVEL_META } from '../data/constants';
+import { LEVEL_META, SUBJECTS } from '../data/constants';
 import { checkNewBadges } from '../data/badges';
 
 /**
@@ -18,7 +18,7 @@ export function calcXP(correct, total, level) {
 /**
  * Given a user object and quiz result, return the updated user.
  */
-export function applyQuizResult(user, { subject, level, answers, questions }) {
+export function applyQuizResult(user, { subject, level, levelBySubject, answers, questions }) {
   const correct = answers.filter((a, i) => a === questions[i].ans).length;
   const total    = questions.length;
   const score    = Math.round((correct / total) * 100);
@@ -32,12 +32,19 @@ export function applyQuizResult(user, { subject, level, answers, questions }) {
       ? user.streak
       : 1;
 
-  const subjectCount = {
-    ...(user.subjectCount || {}),
-    [subject]: ((user.subjectCount || {})[subject] || 0) + 1,
-  };
+  const subjectCount = { ...(user.subjectCount || {}) };
+  if (subject === 'grand') {
+    SUBJECTS.forEach(sub => {
+      subjectCount[sub] = (subjectCount[sub] || 0) + 1;
+    });
+  } else {
+    subjectCount[subject] = (subjectCount[subject] || 0) + 1;
+  }
 
-  const levelsCompleted = [...new Set([...(user.levelsCompleted || []), level])];
+  const completedLevels = subject === 'grand'
+    ? Object.values(levelBySubject || {})
+    : [level];
+  const levelsCompleted = [...new Set([...(user.levelsCompleted || []), ...completedLevels])];
 
   const historyEntry = {
     id:         `${Date.now()}`,
@@ -45,6 +52,7 @@ export function applyQuizResult(user, { subject, level, answers, questions }) {
     timestamp:  Date.now(),
     subject,
     level,
+    levelBySubject: subject === 'grand' ? levelBySubject : null,
     score,
     correct,
     total,

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { getQuizQuestions } from '../data/questions';
+import { getQuizQuestions, getGrandLevelLabel } from '../data/questions';
 import { applyQuizResult } from '../utils/quizEngine';
 import { SECONDS_PER_QUESTION } from '../data/constants';
 import { useStore } from '../context/StoreContext';
@@ -21,9 +21,11 @@ export function useQuiz() {
   // ── Start a quiz ────────────────────────────────────────────────────────
   const startQuiz = useCallback((subject, level) => {
     const questions = getQuizQuestions(subject, level, store.customQuestions);
+    const normalizedLevel = subject === 'grand' ? getGrandLevelLabel(level) : level;
     setQuizSession({
       subject,
-      level,
+      level: normalizedLevel,
+      levelBySubject: subject === 'grand' ? level : null,
       questions,
       current: 0,
       answers: [],
@@ -93,7 +95,13 @@ export function useQuiz() {
     if (isLast) {
       const { updatedUser, score, correct, xpEarned, newBadgeIds } = applyQuizResult(
         store.users[currentUser],
-        { subject: prev.subject, level: prev.level, answers: newAnswers, questions: prev.questions }
+        {
+          subject: prev.subject,
+          level: prev.level,
+          levelBySubject: prev.levelBySubject,
+          answers: newAnswers,
+          questions: prev.questions,
+        }
       );
       // Patch timeTaken into latest history entry
       const totalTime = Math.round((Date.now() - prev.startTime) / 1000);
