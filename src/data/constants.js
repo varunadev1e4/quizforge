@@ -72,5 +72,3 @@ export function getNextRank(xp) {
   return null;
 }
 
-// ─── Storage Key ──────────────────────────────────────────────────────────
-export const STORAGE_KEY = 'quizforge_v4';

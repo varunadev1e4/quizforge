@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { useStore } from '../context/StoreContext';
 import { useNotification } from '../context/NotificationContext';
 import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
@@ -8,6 +9,7 @@ import styles from './LoginPage.module.css';
 
 export default function LoginPage() {
   const { login, register, authError, setAuthError } = useAuth();
+  const { isLoading, storeWarning } = useStore();
   const { notify } = useNotification();
 
   const [tab,         setTab]         = useState('login');
@@ -82,10 +84,11 @@ export default function LoginPage() {
             onChange={e => setPassword(e.target.value)}
           />
 
+          {storeWarning && <p className={styles.error}>{storeWarning}</p>}
           {authError && <p className={styles.error}>{authError}</p>}
 
-          <Button variant="primary" size="lg" full onClick={handleSubmit}>
-            {tab === 'login' ? 'Sign In →' : 'Create Account →'}
+          <Button variant="primary" size="lg" full onClick={handleSubmit} disabled={isLoading}>
+            {isLoading ? 'Connecting…' : tab === 'login' ? 'Sign In →' : 'Create Account →'}
           </Button>
         </div>
 
