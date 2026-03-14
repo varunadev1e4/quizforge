@@ -9,6 +9,7 @@ import { NotificationProvider }  from './context/NotificationContext';
 import Starfield          from './components/layout/Starfield';
 import Navbar             from './components/layout/Navbar';
 import NotificationToast  from './components/ui/NotificationToast';
+import FullScreenLoader   from './components/ui/FullScreenLoader';
 
 // ── Quiz hook ──────────────────────────────────────────────────────────────
 import { useQuiz } from './hooks/useQuiz';
@@ -38,7 +39,17 @@ export default function App() {
 
 // ── AppShell — rendered after providers are ready ──────────────────────────
 function AppShell() {
-  const { user } = useAuth();
+  const { user, isAuthReady } = useAuth();
+
+  if (!isAuthReady) {
+    return (
+      <>
+        <Starfield count={70} />
+        <NotificationToast />
+        <FullScreenLoader />
+      </>
+    );
+  }
 
   if (!user) {
     return (
