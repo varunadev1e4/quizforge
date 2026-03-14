@@ -58,7 +58,16 @@ function AuthenticatedApp() {
   const { user }   = useAuth();
   const [page, setPage] = useState('home');
 
-  const { quizSession, startQuiz, retryIncorrect, exitQuiz, selectOption, confirmAnswer, nextQuestion } = useQuiz();
+  const {
+    quizSession,
+    startQuiz,
+    retryIncorrect,
+    exitQuiz,
+    selectOption,
+    confirmAnswer,
+    nextQuestion,
+    skipQuestion,
+  } = useQuiz();
 
   // Redirect to quiz page automatically when a session starts
   const activePage = quizSession ? 'quiz' : page;
@@ -92,6 +101,7 @@ function AuthenticatedApp() {
           onSelect={selectOption}
           onConfirm={confirmAnswer}
           onNext={nextQuestion}
+          onSkip={skipQuestion}
           onRetry={startQuiz}
           onRetryIncorrect={retryIncorrect}
         />

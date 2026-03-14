@@ -4,7 +4,16 @@ import PageShell    from '../components/layout/PageShell';
 import Button       from '../components/ui/Button';
 import styles       from './QuizPage.module.css';
 
-export default function QuizPage({ session, onExit, onSelect, onConfirm, onNext, onRetry, onRetryIncorrect }) {
+export default function QuizPage({
+  session,
+  onExit,
+  onSelect,
+  onConfirm,
+  onNext,
+  onSkip,
+  onRetry,
+  onRetryIncorrect,
+}) {
 
   if (!session) {
     return (
@@ -40,6 +49,7 @@ export default function QuizPage({ session, onExit, onSelect, onConfirm, onNext,
         onSelect={onSelect}
         onConfirm={onConfirm}
         onNext={onNext}
+        onSkip={onSkip}
       />
     </PageShell>
   );

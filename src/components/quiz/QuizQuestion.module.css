@@ -146,4 +146,12 @@
 }
 
 /* ─── Actions ────────────────────────────────────────────────────────────── */
-.actions { }
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.skipBtn {
+  opacity: 0.9;
+}
