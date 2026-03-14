@@ -10,6 +10,17 @@ const OPTION_LETTERS = ['A', 'B', 'C', 'D'];
 export default function QuizQuestion({ session, onSelect, onConfirm, onNext }) {
   const { subject, level, subtopic, questions, current, selectedOption, phase, timeLeft } = session;
   const q = questions[current];
+
+  if (!q) {
+    return (
+      <div className={`${styles.wrapper} anim-scale-in`}>
+        <div className={styles.questionCard}>
+          <p className={styles.qText}>Questions are not available at the moment. Tests will be coming soon!</p>
+        </div>
+      </div>
+    );
+  }
+
   const displaySubject = q?.subject || subject;
   const displayLevel = q?.level || level;
   const subMeta = SUBJECT_META[displaySubject] || SUBJECT_META.math;
