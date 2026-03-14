@@ -25,6 +25,13 @@ export const SUBJECT_META = {
     glow:   'rgba(248,113,113,0.25)',
     gradient: 'linear-gradient(135deg, #ef4444, #f87171)',
   },
+  grand: {
+    label: 'Grand Test',
+    icon: '🌐',
+    color: '#f59e0b',
+    glow: 'rgba(245,158,11,0.25)',
+    gradient: 'linear-gradient(135deg, #f59e0b, #e879f9)',
+  },
 };
 
 export const LEVEL_META = {
@@ -33,6 +40,7 @@ export const LEVEL_META = {
   hard:   { color: '#fb923c', label: 'Hard',   xpMultiplier: 3.5 },
   master: { color: '#a78bfa', label: 'Master', xpMultiplier: 6   },
   expert: { color: '#f472b6', label: 'Expert', xpMultiplier: 10  },
+  mixed:  { color: '#22d3ee', label: 'Mixed',  xpMultiplier: 1   },
 };
 
 export const QUESTIONS_PER_QUIZ = 15;

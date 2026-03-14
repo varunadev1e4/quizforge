@@ -1,19 +1,21 @@
+import { SUBJECTS, SUBJECT_META, LEVEL_META } from '../../data/constants';
 import { SubjectBadge, LevelBadge } from '../ui/Badge';
 import Button from '../ui/Button';
 import Card from '../ui/Card';
 import styles from './QuizResult.module.css';
 
 export default function QuizResult({ session, onBack, onRetry }) {
-  const { subject, level, questions, answers, result } = session;
+  const { subject, level, levelBySubject, questions, answers, result } = session;
   const { score, correct, total, xpEarned } = result;
 
   const emoji  = score === 100 ? '🏆' : score >= 80 ? '🌟' : score >= 60 ? '👍' : score >= 40 ? '💪' : '📚';
   const msg    = score === 100 ? 'Perfect Score!' : score >= 80 ? 'Excellent!' : score >= 60 ? 'Good Job!' : score >= 40 ? 'Keep Practicing!' : 'Keep Going!';
   const color  = score === 100 ? '#facc15' : score >= 80 ? '#4ade80' : score >= 60 ? '#38bdf8' : score >= 40 ? '#fb923c' : '#ef4444';
 
+  const isGrand = subject === 'grand';
+
   return (
     <div className={`${styles.wrapper} anim-scale-in`}>
-      {/* ── Score hero ─────────────────────────────────────────────────── */}
       <div className={styles.hero}>
         <div className={`${styles.emoji} anim-pop-in`}>{emoji}</div>
         <h2 className={styles.msg} style={{ color }}>{msg}</h2>
@@ -24,9 +26,18 @@ export default function QuizResult({ session, onBack, onRetry }) {
           <SubjectBadge subject={subject} size="md" />
           <LevelBadge level={level} size="md" />
         </div>
+        {isGrand && (
+          <div className={styles.badges}>
+            {SUBJECTS.map(sub => (
+              <span key={sub}>
+                <SubjectBadge subject={sub} size="sm" />
+                <LevelBadge level={levelBySubject?.[sub]} size="sm" />
+              </span>
+            ))}
+          </div>
+        )}
       </div>
 
-      {/* ── Answer review ──────────────────────────────────────────────── */}
       <Card elevated className={styles.reviewCard}>
         <h3 className={styles.reviewTitle}>Answer Review</h3>
         <div className={styles.reviewList}>
@@ -45,6 +56,11 @@ export default function QuizResult({ session, onBack, onRetry }) {
                   <span>{q.q}</span>
                 </div>
                 <div className={styles.reviewA}>
+                  {isGrand && q.subject && (
+                    <span style={{ color: SUBJECT_META[q.subject]?.color }}>
+                      {SUBJECT_META[q.subject]?.icon} {SUBJECT_META[q.subject]?.label} · {LEVEL_META[q.level]?.label}
+                    </span>
+                  )}
                   {isCorrect ? (
                     <span className={styles.correct}>✓ {q.opts[q.ans]}</span>
                   ) : (
@@ -64,10 +80,9 @@ export default function QuizResult({ session, onBack, onRetry }) {
         </div>
       </Card>
 
-      {/* ── Actions ────────────────────────────────────────────────────── */}
       <div className={styles.actions}>
         <Button variant="secondary" size="lg" onClick={onBack}>← Back to Home</Button>
-        <Button variant="primary"   size="lg" onClick={() => onRetry(subject, level)}>Retry Quiz</Button>
+        <Button variant="primary" size="lg" onClick={() => onRetry(subject, isGrand ? levelBySubject : level)}>Retry Quiz</Button>
       </div>
     </div>
   );
