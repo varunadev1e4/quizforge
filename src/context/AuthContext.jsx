@@ -9,6 +9,7 @@ export function AuthProvider({ children }) {
   const { store, persist, isLoading } = useStore();
   const [currentUser, setCurrentUser] = useState(null);
   const [authError, setAuthError] = useState('');
+  const [isAuthReady, setIsAuthReady] = useState(false);
 
   useEffect(() => {
     if (isLoading) return;
@@ -19,6 +20,8 @@ export function AuthProvider({ children }) {
     } else if (savedUser) {
       window.localStorage.removeItem(SESSION_USER_KEY);
     }
+
+    setIsAuthReady(true);
   }, [isLoading, store.users]);
 
   function login(username, password) {
@@ -75,7 +78,7 @@ export function AuthProvider({ children }) {
   const user = currentUser ? store.users[currentUser] : null;
 
   return (
-    <AuthContext.Provider value={{ currentUser, user, login, register, logout, authError, setAuthError }}>
+    <AuthContext.Provider value={{ currentUser, user, login, register, logout, authError, setAuthError, isAuthReady }}>
       {children}
     </AuthContext.Provider>
   );
