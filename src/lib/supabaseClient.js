@@ -65,6 +65,12 @@ export async function supabaseSignUp(email, password) {
   };
 }
 
+
+export async function supabaseRecoverPassword(email) {
+  const result = await authRequest('recover', { email });
+  return result.ok ? { ok: true } : { ok: false, error: result.error };
+}
+
 export async function supabaseSignOut() {
   const accessToken = window.localStorage.getItem('quizforge.sb.accessToken');
   if (!accessToken) return { ok: true };
@@ -72,6 +78,25 @@ export async function supabaseSignOut() {
   const result = await authRequest('logout', {}, accessToken);
   window.localStorage.removeItem('quizforge.sb.accessToken');
   return result.ok ? { ok: true } : { ok: false, error: result.error };
+}
+
+export async function supabaseUpdatePassword(nextPassword) {
+  const accessToken = window.localStorage.getItem('quizforge.sb.accessToken');
+  if (!accessToken) {
+    return { ok: false, error: 'Please sign in again before changing your password.' };
+  }
+
+  const res = await fetch(`${supabaseUrl}/auth/v1/user`, {
+    method: 'PUT',
+    headers: getHeaders({ Authorization: `Bearer ${accessToken}` }),
+    body: JSON.stringify({ password: nextPassword }),
+  });
+
+  if (!res.ok) {
+    return { ok: false, error: await parseError(res, 'Failed to update password.') };
+  }
+
+  return { ok: true };
 }
 
 export async function supabaseGetSession() {
