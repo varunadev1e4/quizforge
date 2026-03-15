@@ -81,9 +81,9 @@ export async function saveStore(nextStore) {
 }
 
 /** Create a fresh user object */
-export function createUser(username, displayName, options = {}) {
+export function createUser(username, password, displayName) {
   return {
-    authUid: options.authUid || null,
+    password,
     role: 'student',
     displayName: displayName || username,
     xp: 0,
