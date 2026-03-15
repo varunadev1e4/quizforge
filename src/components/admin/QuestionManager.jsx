@@ -1,5 +1,5 @@
 import { useMemo, useRef, useState } from 'react';
-import { SUBJECTS, LEVELS, SUBJECT_SUBTOPICS, SUBTOPIC_META, SUBJECT_META, LEVEL_META } from '../../data/constants';
+import { SUBJECTS, LEVELS, SUBJECT_META, LEVEL_META, getSubtopicLabel, getSubjectSubtopicOptions, normalizeSubjectSubtopic } from '../../data/constants';
 import { useStore } from '../../context/StoreContext';
 import { useNotification } from '../../context/NotificationContext';
 import { SubjectBadge, LevelBadge } from '../ui/Badge';
@@ -34,15 +34,7 @@ function normalizeQuestion(raw, fallbackIdPrefix = 'cq') {
   const level = LEVELS.includes(normalizedLevel) ? normalizedLevel : null;
   const questionText = typeof raw.q === 'string' ? raw.q.trim() : '';
   const ans = Number(raw.ans);
-  const allowedSubtopics = SUBJECT_SUBTOPICS[subject] || ['all'];
-  const normalizedSubtopic = normalizeToken(raw.subtopic);
-  const subtopicByLabel = allowedSubtopics.find((key) => {
-    const label = SUBTOPIC_META[key]?.label;
-    return typeof label === 'string' && label.trim().toLowerCase() === normalizedSubtopic;
-  });
-  const subtopic = allowedSubtopics.includes(normalizedSubtopic)
-    ? normalizedSubtopic
-    : (subtopicByLabel || 'all');
+  const subtopic = normalizeSubjectSubtopic(subject, raw.subtopic);
 
   if (!subject || !level || !questionText || opts.some(opt => typeof opt !== 'string' || !opt.trim())) return null;
   if (!Number.isInteger(ans) || ans < 0 || ans > 3) return null;
@@ -251,8 +243,8 @@ export default function QuestionManager() {
           <div>
             <label className={styles.label}>Subtopic</label>
             <select style={sel} value={form.subtopic} onChange={e => setField('subtopic', e.target.value)}>
-              {(SUBJECT_SUBTOPICS[form.subject] || ['all']).map(topic => (
-                <option key={topic} value={topic}>{SUBTOPIC_META[topic]?.label || topic}</option>
+              {getSubjectSubtopicOptions(form.subject).map(topic => (
+                <option key={topic.value} value={topic.value}>{topic.label}</option>
               ))}
             </select>
           </div>
@@ -330,7 +322,7 @@ export default function QuestionManager() {
                 <div className={styles.qMeta}>
                   <SubjectBadge subject={q.subject} />
                   <LevelBadge level={q.level} />
-                  {q.subtopic && q.subtopic !== 'all' && <span className={styles.metric}>{SUBTOPIC_META[q.subtopic]?.label || q.subtopic}</span>}
+                  {q.subtopic && q.subtopic !== 'all' && <span className={styles.metric}>{getSubtopicLabel(q.subtopic)}</span>}
                 </div>
               </Card>
             ))}

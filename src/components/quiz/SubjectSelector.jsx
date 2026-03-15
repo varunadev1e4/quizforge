@@ -4,8 +4,7 @@ import {
   LEVELS,
   SUBJECT_META,
   LEVEL_META,
-  SUBJECT_SUBTOPICS,
-  SUBTOPIC_META,
+  getSubjectSubtopicOptions,
 } from '../../data/constants';
 import Card from '../ui/Card';
 import Button from '../ui/Button';
@@ -44,7 +43,7 @@ export default function SubjectSelector({ onStart }) {
 }
 
 function SubjectCard({ subject, meta, delay, onStart, subtopic, onSubtopicChange }) {
-  const subtopics = SUBJECT_SUBTOPICS[subject] || ['all'];
+  const subtopics = getSubjectSubtopicOptions(subject);
 
   return (
     <div className={`${styles.subjectCard} anim-fade-up`} style={{ animationDelay: `${delay}ms` }}>
@@ -62,7 +61,7 @@ function SubjectCard({ subject, meta, delay, onStart, subtopic, onSubtopicChange
             onChange={e => onSubtopicChange(e.target.value)}
           >
             {subtopics.map(topic => (
-              <option key={topic} value={topic}>{SUBTOPIC_META[topic]?.label || topic}</option>
+              <option key={topic.value} value={topic.value}>{topic.label}</option>
             ))}
           </select>
         </label>

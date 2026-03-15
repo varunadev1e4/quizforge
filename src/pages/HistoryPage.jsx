@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { SUBJECTS, LEVELS, SUBJECT_META, LEVEL_META } from '../data/constants';
+import { SUBJECTS, LEVELS, SUBJECT_META, LEVEL_META, getSubtopicLabel } from '../data/constants';
 import { SubjectBadge, LevelBadge } from '../components/ui/Badge';
 import StatCard   from '../components/ui/StatCard';
 import Card       from '../components/ui/Card';
@@ -151,7 +151,7 @@ export default function HistoryPage() {
                   <div className={styles.rowTop}>
                     <SubjectBadge subject={h.subject} />
                     <LevelBadge   level={h.level} />
-                    {h.subtopic && h.subtopic !== 'all' && <span className={styles.topicChip}>{h.subtopic}</span>}
+                    {h.subtopic && h.subtopic !== 'all' && <span className={styles.topicChip}>{getSubtopicLabel(h.subtopic)}</span>}
                   </div>
                   <div className={styles.rowMeta}>
                     {h.correct}/{h.total} correct
