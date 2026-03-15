@@ -1,4 +1,4 @@
-import { SUBJECTS, SUBJECT_META, LEVEL_META } from '../../data/constants';
+import { SUBJECTS, SUBJECT_META, LEVEL_META, getSubtopicLabel } from '../../data/constants';
 import { SubjectBadge, LevelBadge } from '../ui/Badge';
 import Button from '../ui/Button';
 import Card from '../ui/Card';
@@ -26,7 +26,7 @@ export default function QuizResult({ session, onBack, onRetry, onRetryIncorrect 
         <div className={styles.badges}>
           <SubjectBadge subject={subject} size="md" />
           <LevelBadge level={level} size="md" />
-          {!isGrand && subtopic && subtopic !== 'all' && <span>{subtopic}</span>}
+          {!isGrand && subtopic && subtopic !== 'all' && <span>{getSubtopicLabel(subtopic)}</span>}
         </div>
         {isGrand && (
           <div className={styles.badges}>

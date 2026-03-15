@@ -2,7 +2,7 @@ import { SubjectBadge, LevelBadge } from '../ui/Badge';
 import QuizTimer from './QuizTimer';
 import ProgressBar from '../ui/ProgressBar';
 import Button from '../ui/Button';
-import { SUBJECT_META } from '../../data/constants';
+import { SUBJECT_META, getSubtopicLabel } from '../../data/constants';
 import styles from './QuizQuestion.module.css';
 
 const OPTION_LETTERS = ['A', 'B', 'C', 'D'];
@@ -34,7 +34,7 @@ export default function QuizQuestion({ session, onSelect, onConfirm, onNext, onS
           <SubjectBadge subject={displaySubject} size="md" />
           <LevelBadge level={displayLevel} size="md" />
           {subject !== 'grand' && subtopic && subtopic !== 'all' && (
-            <span className={styles.topicPill}>{subtopic}</span>
+            <span className={styles.topicPill}>{getSubtopicLabel(subtopic)}</span>
           )}
         </div>
 
