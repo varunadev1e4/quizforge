@@ -5,9 +5,11 @@ import {
   isSupabaseConfigured,
   persistSupabaseSession,
   supabaseGetSession,
+  supabaseRecoverPassword,
   supabaseSignIn,
   supabaseSignOut,
   supabaseSignUp,
+  supabaseUpdatePassword,
 } from '../lib/supabaseClient';
 
 const AuthContext = createContext(null);
@@ -197,6 +199,104 @@ export function AuthProvider({ children }) {
     return true;
   }
 
+
+  async function changePassword(currentPassword, nextPassword) {
+    if (!currentUser || !store.users[currentUser]) {
+      setAuthError('You must be signed in to change your password.');
+      return { ok: false };
+    }
+
+    if (!currentPassword || !nextPassword) {
+      setAuthError('Current and new passwords are required.');
+      return { ok: false };
+    }
+
+    if (nextPassword.length < 8) {
+      setAuthError('New password must be at least 8 characters.');
+      return { ok: false };
+    }
+
+    if (!isSupabaseConfigured) {
+      const localUser = store.users[currentUser];
+      if (!localUser?.password || localUser.password !== currentPassword) {
+        setAuthError('Current password is incorrect.');
+        return { ok: false };
+      }
+
+      persist(s => ({
+        ...s,
+        users: {
+          ...s.users,
+          [currentUser]: {
+            ...s.users[currentUser],
+            password: nextPassword,
+          },
+        },
+      }));
+      setAuthError('');
+      return { ok: true };
+    }
+
+    const email = usernameToEmail(currentUser);
+    const verifyRes = await supabaseSignIn(email, currentPassword);
+    if (!verifyRes.ok) {
+      setAuthError('Current password is incorrect.');
+      return { ok: false };
+    }
+
+    persistSupabaseSession(verifyRes.accessToken);
+    const updateRes = await supabaseUpdatePassword(nextPassword);
+    if (!updateRes.ok) {
+      setAuthError(updateRes.error || 'Failed to update password.');
+      return { ok: false };
+    }
+
+    setAuthError('');
+    return { ok: true };
+  }
+
+  async function requestPasswordReset(username, nextPassword) {
+    const normalizedUsername = sanitizeUsername(username);
+
+    if (!normalizedUsername) {
+      setAuthError('Username is required.');
+      return { ok: false };
+    }
+
+    if (!isSupabaseConfigured) {
+      if (!store.users[normalizedUsername]) {
+        setAuthError('User not found.');
+        return { ok: false };
+      }
+      if (!nextPassword || nextPassword.length < 8) {
+        setAuthError('New password must be at least 8 characters.');
+        return { ok: false };
+      }
+
+      persist(s => ({
+        ...s,
+        users: {
+          ...s.users,
+          [normalizedUsername]: {
+            ...s.users[normalizedUsername],
+            password: nextPassword,
+          },
+        },
+      }));
+      setAuthError('');
+      return { ok: true, localReset: true };
+    }
+
+    const recoverRes = await supabaseRecoverPassword(usernameToEmail(normalizedUsername));
+    if (!recoverRes.ok) {
+      setAuthError(recoverRes.error || 'Failed to send recovery email.');
+      return { ok: false };
+    }
+
+    setAuthError('');
+    return { ok: true, emailSent: true };
+  }
+
   async function logout() {
     setCurrentUser(null);
     window.localStorage.removeItem(SESSION_USER_KEY);
@@ -208,7 +308,7 @@ export function AuthProvider({ children }) {
   const user = currentUser ? store.users[currentUser] : null;
 
   return (
-    <AuthContext.Provider value={{ currentUser, user, login, register, logout, authError, setAuthError, isAuthReady }}>
+    <AuthContext.Provider value={{ currentUser, user, login, register, logout, changePassword, requestPasswordReset, authError, setAuthError, isAuthReady }}>
       {children}
     </AuthContext.Provider>
   );

@@ -195,3 +195,37 @@
   color: var(--text-muted);
   font-family: 'Space Mono', monospace;
 }
+
+.passwordHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.securityHint {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.passwordGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.passwordAction {
+  margin-top: 14px;
+}
+
+.passwordError {
+  margin-top: 6px;
+  color: var(--danger-500);
+  font-size: 12px;
+}
+
+@media (max-width: 900px) {
+  .passwordGrid {
+    grid-template-columns: 1fr;
+  }
+}

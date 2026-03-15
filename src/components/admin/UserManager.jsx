@@ -1,13 +1,14 @@
 import { useStore } from '../../context/StoreContext';
 import { useAuth } from '../../context/AuthContext';
 import { useNotification } from '../../context/NotificationContext';
+import { isSupabaseConfigured } from '../../lib/supabaseClient';
 import { getRank } from '../../data/constants';
 import Button from '../ui/Button';
 import styles from './UserManager.module.css';
 
 export default function UserManager() {
   const { store, persist } = useStore();
-  const { currentUser }    = useAuth();
+  const { currentUser } = useAuth();
   const { notify }         = useNotification();
 
   const users = Object.entries(store.users);
@@ -21,6 +22,30 @@ export default function UserManager() {
       return { ...s, users: u };
     });
     notify('User removed', 'info');
+  }
+
+
+
+  function handleResetPassword(uid) {
+    if (uid === 'admin') return notify('Use the profile page to change admin password.', 'info');
+
+    if (isSupabaseConfigured) {
+      notify('Cloud mode: ask the user to use "Forgot Password" on sign in.', 'info');
+      return;
+    }
+
+    const tempPassword = `quizforge-${Math.random().toString(36).slice(2, 8)}`;
+    persist(s => ({
+      ...s,
+      users: {
+        ...s.users,
+        [uid]: {
+          ...s.users[uid],
+          password: tempPassword,
+        },
+      },
+    }));
+    notify(`Temporary password for @${uid}: ${tempPassword}`, 'success');
   }
 
   function handleToggleRole(uid) {
@@ -87,6 +112,9 @@ export default function UserManager() {
                         <>
                           <Button size="sm" variant="ghost" onClick={() => handleToggleRole(uid)}>
                             {u.role === 'admin' ? 'Demote' : 'Promote'}
+                          </Button>
+                          <Button size="sm" variant="secondary" onClick={() => handleResetPassword(uid)}>
+                            Reset Password
                           </Button>
                           <Button size="sm" variant="danger" onClick={() => handleRemove(uid)}>
                             Remove
