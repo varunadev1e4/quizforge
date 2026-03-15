@@ -92,9 +92,6 @@ export default function LoginPage() {
           </Button>
         </div>
 
-        {tab === 'login' && (
-          <p className={styles.demo}>Legacy demo account: <code>admin</code> / <code>admin123</code> (auto-migrates on first sign-in)</p>
-        )}
       </div>
     </div>
   );
