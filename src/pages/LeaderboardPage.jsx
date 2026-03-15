@@ -10,7 +10,7 @@ const MEDALS = ['🥇', '🥈', '🥉'];
 
 const SORT_OPTIONS = [
   { key: 'xp',      label: 'Total XP'    },
-  { key: 'quizzes', label: 'Quizzes'     },
+  { key: 'totalQuizzes', label: 'Quizzes'     },
   { key: 'badges',  label: 'Badges'      },
   { key: 'streak',  label: 'Streak'      },
 ];

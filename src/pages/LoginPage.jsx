@@ -17,13 +17,13 @@ export default function LoginPage() {
   const [password,    setPassword]    = useState('');
   const [displayName, setDisplayName] = useState('');
 
-  function handleSubmit() {
+  async function handleSubmit() {
     setAuthError('');
     if (tab === 'login') {
-      const ok = login(username, password);
+      const ok = await login(username, password);
       if (ok) notify(`Welcome back, ${username}! 👋`);
     } else {
-      const ok = register(username, password, displayName);
+      const ok = await register(username, password, displayName);
       if (ok) notify('Account created! Welcome to QuizForge 🎉');
     }
   }
@@ -70,7 +70,7 @@ export default function LoginPage() {
           )}
           <Input
             label="Username"
-            placeholder="your_username"
+            placeholder="letters, numbers, underscores"
             icon="@"
             value={username}
             onChange={e => setUsername(e.target.value)}
@@ -93,7 +93,7 @@ export default function LoginPage() {
         </div>
 
         {tab === 'login' && (
-          <p className={styles.demo}>Demo: <code>admin</code> / <code>admin123</code></p>
+          <p className={styles.demo}>Legacy demo account: <code>admin</code> / <code>admin123</code> (auto-migrates on first sign-in)</p>
         )}
       </div>
     </div>
