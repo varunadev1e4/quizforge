@@ -53,7 +53,7 @@ npm start
 
 This creates a singleton `app_state` table (`id = 1`) that stores app data in `jsonb` and enables RLS policies for demo usage.
 
-> ⚠️ Current auth model stores app credentials inside app state (including passwords). This is okay for demos/prototypes but not production-grade security.
+> ✅ Auth now uses Supabase Auth (email/password behind the scenes). Legacy in-state demo credentials are auto-migrated on first successful sign-in.
 
 ---
 
@@ -72,7 +72,7 @@ This creates a singleton `app_state` table (`id = 1`) that stores app data in `j
 
 - Make sure Supabase RLS policies are restricted (avoid open anon write in production).
 - Rotate keys if exposed.
-- Move to Supabase Auth + hashed passwords when ready.
+- Confirm email/OTP policy and password reset flows in Supabase Auth settings.
 
 ---
 
